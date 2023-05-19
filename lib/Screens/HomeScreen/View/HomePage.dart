@@ -24,17 +24,48 @@ class _HomePageState extends State<HomePage> {
           title: const Text("Speech To Text"),
         ),
         body: Center(
-          child: Obx(() => Container(
-            width: Get.width/1.5,
-                  child: Text(
-                "${homeController.text.value}",
-                textAlign: TextAlign.center,
-                maxLines: 30,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis),
-              ))),
+          child: Obx(() => Card(
+                child: Container(
+                    width: Get.width / 1.09,
+                    height: Get.height / 3,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${homeController.text.value}",
+                            textAlign: TextAlign.center,
+                            maxLines: 30,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 6, bottom: 6),
+                            child: IconButton(
+                              onPressed: () async {
+                                if (homeController.text.isNotEmpty) {
+                                  await homeController.flutterTts
+                                      .speak(homeController.text.value);
+                                } else {
+                                  Get.snackbar("Alert", "Please Speak Any Things");
+                                }
+                              },
+                              icon: Icon(
+                                Icons.volume_up_sharp,
+                                color: Colors.blue,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+              )),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Obx(
@@ -54,15 +85,14 @@ class _HomePageState extends State<HomePage> {
                   if (available) {
                     homeController.isListne.value = true;
                     homeController.speechToText.listen(
-                        listenFor: const Duration(seconds: 30),
+                      listenFor: const Duration(seconds: 30),
                       pauseFor: const Duration(seconds: 15),
                       listenMode: ListenMode.deviceDefault,
                       onResult: (result) {
                         homeController.text.value = "";
-                        if(result.finalResult)
-                          {
-                            homeController.isListne.value = false;
-                          }
+                        if (result.finalResult) {
+                          homeController.isListne.value = false;
+                        }
                         homeController.text.value = result.recognizedWords;
                       },
                     );
