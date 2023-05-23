@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:spt/Screens/HomeScreen/Model/AnswerModel.dart';
 
 class HomeController extends GetxController
 {
@@ -9,6 +10,6 @@ class HomeController extends GetxController
   SpeechToText speechToText = SpeechToText();
   RxString text = "Please Click Button & Speak Any Thing".obs;
   FlutterTts flutterTts = FlutterTts();
-  RxList Chats = [].obs;
+  RxList<MessageModel> Chats = <MessageModel>[].obs;
   TextEditingController txtMessage = TextEditingController();
 }

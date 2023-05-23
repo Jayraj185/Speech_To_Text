@@ -10,16 +10,17 @@ class ApiHelper
 
   Future<HomeModel?> AskQuestion({required String Question})
   async {
+    print("====== $Question");
     String apiLink = "https://simple-chatgpt-api.p.rapidapi.com/ask";
-    Map body = {
-      "question": Question
-    };
-    Map<String,String> headers = {
-      "content-type" : "application/json",
-      "X-RapidAPI-Key" : "d9f5b28687msh2be2959e965654dp1726d3jsna7e6e876b026",
-      "X-RapidAPI-Host" : "simple-chatgpt-api.p.rapidapi.com",
-    };
-    var response = await http.post(Uri.parse(apiLink),body: body,headers: headers);
+    var response = await http.post(
+          Uri.parse(apiLink),
+          body: jsonEncode({"question": Question}),
+          headers: {
+            "content-type" : "application/json",
+            "X-RapidAPI-Key" : "1ffc10f215msh3a39e6357e70209p12737fjsn19fff83a639a",
+            "X-RapidAPI-Host" : "simple-chatgpt-api.p.rapidapi.com",
+          }
+        );
     if(response.statusCode == 200)
       {
         var json = jsonDecode(response.body);
